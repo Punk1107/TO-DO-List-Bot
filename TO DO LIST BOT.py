@@ -2112,7 +2112,7 @@ async def reminder_task():
 if __name__ == "__main__":
     
     # ✅ Start Flask WebServer
-    threading.Thread(target=webserver, daemon=True).start()
+    webserver.start_webserver()
     async def main():
         try:
             # Connect and initialize DB (async connect)
