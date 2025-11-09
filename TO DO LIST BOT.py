@@ -6,6 +6,8 @@ from datetime import datetime, timedelta
 import pytz, sqlite3, os, logging, asyncio, csv, io, tempfile
 from dotenv import load_dotenv
 from rate_limiter import rate_limit, SecurityValidator, audit_logger, cleanup_rate_limiter
+import threading
+import webserver
 
 # ---------------- Load .env ----------------
 load_dotenv()
@@ -2105,8 +2107,12 @@ async def reminder_task():
                 except Exception as e:
                     logging.error(f"Error in exporttasks: {e}")
                     await interaction.response.send_message("❌ เกิดข้อผิดพลาดในการส่งออก", ephemeral=True)
+                    
 # ---------------- Run Bot ----------------
 if __name__ == "__main__":
+    
+    # ✅ Start Flask WebServer
+    threading.Thread(target=webserver, daemon=True).start()
     async def main():
         try:
             # Connect and initialize DB (async connect)
